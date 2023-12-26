@@ -1,8 +1,14 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter as FontSans } from "next/font/google";
 import "./globals.css";
+import { cn } from "@/lib/utils";
+import DashboardLayout from "./DashboardLayout";
+import { ThemeProvider } from "./ThemeProvider";
 
-const inter = Inter({ subsets: ["latin"] });
+export const fontSans = FontSans({
+    subsets: ["latin"],
+    variable: "--font-sans",
+});
 
 export const metadata: Metadata = {
     title: "Create Next App",
@@ -11,30 +17,15 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
     return (
-        <div className="flex h-screen bg-gray-200 overflow-hidden">
-            <div className="min-w-64 bg-blue-500 overflow-auto sticky top-0 h-screen">
-                <div className="flex flex-col text-2xl m-4">
-                    <div>Link 1</div>
-                    <div>Link 2</div>
-                    <div>Link 3</div>
-                    <div>Link 4</div>
-                    <div>Link 5</div>
-                    <div>Link 6</div>
-                </div>
-            </div>
-            <div className="flex flex-col flex-grow ">
-                <div className="bg-green-500 sticky top-0 text-2xl h-32 z-10">
-                    {/* Topbar content */}
-                    <div className="flex justify-between m-4">
-                        <div>Some stuff on the left</div>
-                        <div>Other stuff on the right</div>
-                    </div>
-                </div>
-                <div className="bg-red-500 flex-grow overflow-auto">
-                    {/* Main area content */}
-                    {children}
-                </div>
-            </div>
-        </div>
+        <>
+            <html lang="en" suppressHydrationWarning>
+                <head />
+                <body className={cn("min-h-screen bg-background font-sans antialiased", fontSans.variable)}>
+                    <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+                        <DashboardLayout>{children}</DashboardLayout>
+                    </ThemeProvider>
+                </body>
+            </html>
+        </>
     );
 }
